@@ -343,11 +343,194 @@ SELECT product_name, COUNT(id)
 FROM sales
 GROUP BY product_name;
 
+sakila
+/** 11/24  **/
+/**Having count**/
+/**Roll up**/
 
-  
+SELECT MAX(amount) FROM payments;
+
+SELECT 
+    customerNumber, 
+    checkNumber, 
+    amount
+FROM
+    payments
+WHERE
+    amount >= (SELECT MAX(amount) FROM payments);
+
+
+SELECT  AVG(amount) FROM payments;
+
+SELECT 
+    customerNumber, 
+    checkNumber, 
+    amount
+FROM
+    payments
+WHERE
+    amount > (SELECT  AVG(amount) FROM payments);
+
+
+
+CREATE VIEW customerPayments
+AS 
+SELECT 
+    customerName, 
+    checkNumber, 
+    paymentDate, 
+    amount
+FROM
+    customers
+INNER JOIN
+    payments USING (customerNumber);
+    
+SELECT * FROM customerPayments;           
+
+
+CREATE VIEW test1
+AS 
+SELECT 
+    customerName, 
+    checkNumber, 
+    paymentDate, 
+    amount
+FROM
+    customers
+INNER JOIN
+    payments USING (customerNumber);     
+
+
+
+CREATE OR REPLACE VIEW test3
+AS
+SELECT 
+   	YEAR(paymentDate),
+   	
+   	AVG(amount)
+FROM
+    test1
+GROUP BY
+    	YEAR(paymentDate) ;
+test3test3    	
+SELECT * FROM test3;     
+   
+   
+   
+SELECT 
+    customerName
+FROM
+    customers
+WHERE
+    customerNumber NOT IN (SELECT *
+        FROM
+            test4);
+            
+CREATE OR REPLACE VIEW test4
+AS     
+SELECT DISTINCT
+            customerNumber
+        FROM
+            orders;
+            
+
+            
+CREATE VIEW test5
+AS
+SELECT 
+    customerNumber ,customerName, salesRepEmployeeNumber
+FROM
+	customers;
+         
+SELECT * FROM test5;
+
+
+CREATE OR REPLACE VIEW test6
+AS
+
+
+SELECT t.customerNumber ,t.customerName, t.salesRepEmployeeNumber, e.firstName, e.lastName
+FROM test5 t
+INNER JOIN employees e
+
+ON t.salesRepEmployeeNumber = e.employeeNumber
+
+
+SELECT * FROM test6;
+
+
+
+
+SELECT 
+    productName, sales
+FROM
+    (SELECT 
+        productCode, 
+        ROUND(SUM(quantityOrdered * priceEach)) sales
+    FROM
+        orderdetails
+    INNER JOIN orders USING (orderNumber)
+    WHERE
+        YEAR(shippedDate) = 2003
+    GROUP BY productCode
+    ORDER BY sales DESC
+    LIMIT 5) top5products2003
+INNER JOIN
+    products USING (productCode);
+    
+    
+    
+    
+CREATE OR REPLACE VIEW   test7
+AS
+SELECT 
+      productCode, 
+      ROUND(SUM(quantityOrdered * priceEach)) sales
+FROM
+      orderdetails
+INNER JOIN orders USING (orderNumber)
+WHERE
+        YEAR(shippedDate) = 2003
+GROUP BY productCode
+ORDER BY sales DESC
+LIMIT 5
+
+
+SELECT * FROM test7
+
+
+SELECT 
+    productName, sales
+FROM
+   test7 
+INNER JOIN
+    products USING (productCode);
+ 
+    
+/** 11/24筆記待補 
+從Selecting a database 
+到AUTO_INCREMENT 和一點點Data Types
+**/ 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /** 
+
+
+
+
+
 SELECT 
     m.member_id, 
     m.name AS "會員", 

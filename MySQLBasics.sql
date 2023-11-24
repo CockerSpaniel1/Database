@@ -173,7 +173,7 @@ ORDER BY
     
     
    -- 註解mysql
-	-- charter and ,or ,in ,not in ,between ,like 以下待補上
+	--  and ,or ,in ,not in ,between ,like 以下待補上
 SELECT 
     customername, 
     country, 
